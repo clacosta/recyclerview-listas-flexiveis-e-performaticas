@@ -1,9 +1,7 @@
 package br.com.alura.ceep.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.List;
@@ -19,14 +17,25 @@ public class ListaNotasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_notas);
-        RecyclerView listaNotas = findViewById(R.id.lista_notas_recyclerview);
+        List<Nota> todosNotas = notasDeExemplo();
+        configuraRecyclerView(todosNotas);
+    }
+
+    private List<Nota> notasDeExemplo() {
         NotaDAO dao = new NotaDAO();
-        for (int i = 1; i <= 10000; i++) {
-            dao.insere(new Nota("Titulo" + i, "Descrição" + i));
-        }
-        List<Nota> todosNotas = dao.todos();
-        listaNotas.setAdapter(new ListaNotasAdapter(this, todosNotas));
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        listaNotas.setLayoutManager(layoutManager);
+        dao.insere(new Nota("Primeira nota", "Descrição pequena"),
+                new Nota(
+                        "Segunda nota",
+                        "Segunda descrição é bem maior que a da primeira nota"));
+        return dao.todos();
+    }
+
+    private void configuraRecyclerView(List<Nota> notas) {
+        RecyclerView listaNotas = findViewById(R.id.lista_notas_recyclerview);
+        configuraAdapter(notas, listaNotas);
+    }
+
+    private void configuraAdapter(List<Nota> notas, RecyclerView listaNotas) {
+        listaNotas.setAdapter(new ListaNotasAdapter(this, notas));
     }
 }
