@@ -32,6 +32,13 @@ public class ListaNotasActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<Nota> todosNotas = new NotaDAO().todos();
+        configuraRecyclerView(todosNotas);
+    }
+
     private List<Nota> notasDeExemplo() {
         NotaDAO dao = new NotaDAO();
         dao.insere(new Nota("Primeira nota", "Descrição pequena"),
@@ -49,4 +56,5 @@ public class ListaNotasActivity extends AppCompatActivity {
     private void configuraAdapter(List<Nota> notas, RecyclerView listaNotas) {
         listaNotas.setAdapter(new ListaNotasAdapter(this, notas));
     }
+
 }
