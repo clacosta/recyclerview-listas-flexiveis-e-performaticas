@@ -10,10 +10,12 @@ import android.widget.EditText;
 import br.com.alura.ceep.R;
 import br.com.alura.ceep.model.Nota;
 
+import static br.com.alura.ceep.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
+import static br.com.alura.ceep.ui.activity.NotaActivityConstantes.RESULT_CODE_NOTA_CRIADA;
+
 public class FormularioNotaActivity extends AppCompatActivity {
 
-    public static final String CHAVE_NOTA = "nota";
-    public static final int RESULT_CODE_NOTA_CRIADA = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
