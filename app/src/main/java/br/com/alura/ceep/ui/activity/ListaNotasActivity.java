@@ -2,6 +2,7 @@ package br.com.alura.ceep.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -30,18 +31,19 @@ public class ListaNotasActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ListaNotasActivity.this, FormularioNotaActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        NotaDAO dao = new NotaDAO();
-        todosNotas.clear();
-        todosNotas.addAll(dao.todos());
-        adapter.notifyDataSetChanged();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 2 && data.hasExtra("nota")) {
+            Nota notaRecebida = (Nota) data.getSerializableExtra("nota");
+            new NotaDAO().insere(notaRecebida);
+            adapter.adiciona(notaRecebida);
+        }
     }
 
     private List<Nota> notasDeExemplo() {
