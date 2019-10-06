@@ -1,18 +1,19 @@
 package br.com.alura.ceep.ui.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import br.com.alura.ceep.R;
-import br.com.alura.ceep.dao.NotaDAO;
 import br.com.alura.ceep.model.Nota;
 
 public class FormularioNotaActivity extends AppCompatActivity {
+
+    public static final String CHAVE_NOTA = "nota";
+    public static final int RESULT_CODE_NOTA_CRIADA = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,16 +29,27 @@ public class FormularioNotaActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_formulario_nota_ic_salva){
-            EditText titulo = findViewById(R.id.formulario_nota_titulo);
-            EditText descricao = findViewById(R.id.formulario_nota_descricao);
-            Nota notaCriada = new Nota(titulo.getText().toString(), descricao.getText().toString());
-
-            Intent resultadoInsersao = new Intent();
-            resultadoInsersao.putExtra("nota", notaCriada);
-            setResult(2, resultadoInsersao);
+        if (ehMenuSalvaNota(item)) {
+            Nota notaCriada = criaNota();
+            retornaNota(notaCriada);
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void retornaNota(Nota nota) {
+        Intent resultadoInsersao = new Intent();
+        resultadoInsersao.putExtra(CHAVE_NOTA, nota);
+        setResult(RESULT_CODE_NOTA_CRIADA, resultadoInsersao);
+    }
+
+    private Nota criaNota() {
+        EditText titulo = findViewById(R.id.formulario_nota_titulo);
+        EditText descricao = findViewById(R.id.formulario_nota_descricao);
+        return new Nota(titulo.getText().toString(), descricao.getText().toString());
+    }
+
+    private boolean ehMenuSalvaNota(MenuItem item) {
+        return item.getItemId() == R.id.menu_formulario_nota_ic_salva;
     }
 }
